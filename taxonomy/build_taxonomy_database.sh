@@ -20,24 +20,20 @@
 
 # The script:
 
+wget https://sisu.ut.ee/wp-content/uploads/sites/643/General_EUK_SSU_v2.0.zip
 
-wget https://sisu.ut.ee/wp-content/uploads/sites/643/General_EUK_SSU_v1.9.4.zip
 # get Eukaryome databases
-wget https://sisu.ut.ee/wp-content/uploads/sites/643/General_EUK_SSU_v1.9.4.zip
-unzip General_EUK_SSU_v1.9.4.zip && rm General_EUK_SSU_v1.9.4.zip
-wget https://sisu.ut.ee/wp-content/uploads/sites/643/General_EUK_ITS_v1.9.4.zip
-unzip General_EUK_ITS_v1.9.4.zip && rm General_EUK_ITS_v1.9.4.zip
+wget https://sisu.ut.ee/wp-content/uploads/sites/643/General_EUK_SSU_v2.0.zip
+unzip General_EUK_SSU_v2.0.zip && rm General_EUK_SSU_v2.0.zip
 
 
 # reformat Eukaryome to play nicely with dada2 assignTaxonomy() function
-cat General_EUK_SSU_v1.9.4.fasta | sed 's/>\([^;]*;\)/>/' | sed 's/>\([^|]*|\)/>/' | sed 's/|/;/g' > Eukaryome_General_SSU_v1.9.4_reformatted.fasta
-cat General_EUK_ITS_v1.9.4.fasta | sed 's/>\([^;]*;\)/>/' | sed 's/>\([^|]*|\)/>/' | sed 's/|/;/g' > Eukaryome_General_ITS_v1.9.4_reformatted.fasta
+cat General_EUK_SSU_v2.0.fasta | sed 's/>\([^;]*;\)/>/' | sed 's/>\([^|]*|\)/>/' | sed 's/|/;/g' > Eukaryome_General_SSU_v2.0_reformatted.fasta
 
 
 # get maarjAM databases (fasta)
 wget https://maarjam.ut.ee/resources/maarjam_database_SSU_TYPE.fasta.2021.zip -O maarjam_database_SSU_TYPE_2021.fasta.gz
 wget https://maarjam.ut.ee/resources/maarjam_database_SSU.fasta.2021.zip -O maarjam_database_SSU_2021.fasta.gz
-wget https://maarjam.ut.ee/resources/maarjam_database_full_ITS.fasta.2021.zip -O maarjam_database_full_ITS_2021.fasta.gz
 
 # decompress
 gunzip maarjam_database_*gz
@@ -49,8 +45,7 @@ Rscript ./format_maarjAM.R
 
 # The R script built some newly formatted files...
 # combine the databases
-cat maarjam_database_SSU*newheaders.fasta Eukaryome_General_SSU_v1.9.4_reformatted.fasta > Eukaryome_General_SSU_v1.9.4_reformatted_VTX.fasta
-cat maarjam_database_full_ITS_2021_newheaders.fasta Eukaryome_General_ITS_v1.9.4_reformatted.fasta > Eukaryome_General_ITS_v1.9.4_reformatted_maarjam.fasta
+cat maarjam_database_SSU*newheaders.fasta Eukaryome_General_SSU_v2.0_reformatted.fasta > Eukaryome_General_SSU_v2.0_reformatted_VTX.fasta
 
 # compress the final files
 gzip *.fasta
